@@ -1,5 +1,4 @@
-
-insertion sort
+//insertion sort
 #include <iostream>
 using namespace std;
 
