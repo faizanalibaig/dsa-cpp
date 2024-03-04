@@ -1,4 +1,4 @@
-selection sorting:
+//selection sorting:
 
 #include <iostream>
 using namespace std;
