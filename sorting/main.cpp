@@ -18,6 +18,7 @@ int SelectionSort(int array[], int size){
 }
 
 int main() {
+     //array
    int array[5]={2,1,10,3,2};
    int size=sizeof(array)/sizeof(int);
   
