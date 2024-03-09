@@ -1,5 +1,5 @@
 //Linked List is a type of linear data
-structure. It is collection of nodes.
+//structure. It is a collection of nodes.
 
 
 //singly linked list with insertion in the start
