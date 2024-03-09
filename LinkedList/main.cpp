@@ -1,4 +1,4 @@
-Linked List is a type of linear data
+//Linked List is a type of linear data
 structure. It is collection of nodes.
 
 
