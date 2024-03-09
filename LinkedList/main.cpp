@@ -6,6 +6,7 @@
 #include <iostream>
 using namespace std;
 
+//node definition
 class Node{
     public:
     int data;
@@ -17,19 +18,25 @@ class Node{
     }
 };
 
+//addition at the end
 void insertionAtTail(Node* &tail, int data){
+    //node creation
     Node* temp=new Node(data);
     tail-> next=temp;
     tail=temp;
     
 }
 
+//addition at the start
 void insertionAtHead(Node* &head, int data){
+    //node creation
     Node* temp=new Node(data);
     temp -> next=head;
     head=temp;
 }
 
+
+//function for print of LinkedList
 void print(Node* head){
     Node* temp=head;
     
@@ -39,6 +46,7 @@ void print(Node* head){
     }
 }
 
+//main function
 int main() {
     Node* node= new Node(10);
     Node* head=node;
