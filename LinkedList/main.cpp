@@ -13,6 +13,7 @@ class Node{
     }
 };
 
+//insertion at head
 void insertAtFirst(Node* &head, int data){
     //create a node 
     Node* node=new Node(data);
