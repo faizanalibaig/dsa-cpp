@@ -44,7 +44,7 @@ void insertAtMiddle(Node* &head, int position, int data){
     
 }
 
-
+//print linked list
 void print(Node* &head){
     Node* temp=head;
     
