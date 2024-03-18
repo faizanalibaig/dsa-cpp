@@ -57,6 +57,7 @@ void print(Node* &head){
 
 //main function
 int main() {
+  //node creation
     Node* node1= new Node(10);
     Node* head=node1;
     Node* tail=node1;
