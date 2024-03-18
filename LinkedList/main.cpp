@@ -29,6 +29,7 @@ void insertAtEnd(Node* &tail, int data){
     tail=tail->next;
 }
 
+//insertion at any position
 void insertAtMiddle(Node* &head, int position, int data){
     Node* temp=head;
     int count=1;
@@ -42,6 +43,7 @@ void insertAtMiddle(Node* &head, int position, int data){
     temp->next=node;
     
 }
+
 
 void print(Node* &head){
     Node* temp=head;
