@@ -22,6 +22,7 @@ void insertAtFirst(Node* &head, int data){
     
 }
 
+//insertion at tail
 void insertAtEnd(Node* &tail, int data){
     Node* node=new Node(data);
     tail->next=node;
