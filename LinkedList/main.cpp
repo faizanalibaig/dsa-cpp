@@ -1,59 +1,70 @@
-//Linked List is a type of linear data
-//structure. It is a collection of nodes.
 
-
-//singly linked list with insertion in the start
 #include <iostream>
 using namespace std;
 
-//node definition
 class Node{
-    public:
+  public:
     int data;
     Node* next;
     
     Node(int data){
-        this -> data=data;
-        this -> next=NULL;
+        this->data=data;
+        this->next=NULL;
     }
 };
 
-//addition at the end
-void insertionAtTail(Node* &tail, int data){
-    //node creation
-    Node* temp=new Node(data);
-    tail-> next=temp;
-    tail=temp;
+void insertAtFirst(Node* &head, int data){
+    //create a node 
+    Node* node=new Node(data);
+    node->next=head;
+    head=node;
     
 }
 
-//addition at the start
-void insertionAtHead(Node* &head, int data){
-    //node creation
-    Node* temp=new Node(data);
-    temp -> next=head;
-    head=temp;
+void insertAtEnd(Node* &tail, int data){
+    Node* node=new Node(data);
+    tail->next=node;
+    tail=tail->next;
 }
 
+void insertAtMiddle(Node* &head, int position, int data){
+    Node* temp=head;
+    int count=1;
+    while(count<position-1){
+        temp=temp->next;
+        count++;
+    }
+    
+    Node* node=new Node(data);
+    node->next=temp->next;
+    temp->next=node;
+    
+}
 
-//function for print of LinkedList
-void print(Node* head){
+void print(Node* &head){
     Node* temp=head;
     
-    while(temp != NULL){
-        cout << temp-> data <<" ";
-        temp=temp-> next;
+    while(temp!=NULL){
+        cout<< temp->data <<" ";
+        temp=temp->next;
     }
+    cout<< endl;
 }
 
-//main function
 int main() {
-    Node* node= new Node(10);
-    Node* head=node;
-    Node* tail=node;
+    Node* node1= new Node(10);
+    Node* head=node1;
+    Node* tail=node1;
     
-    insertionAtTail(tail,15);
-    insertionAtHead(head, 12);
+    insertAtFirst(head, 12);
+    insertAtFirst(head, 15);
+    insertAtEnd(tail, 20);
+    insertAtEnd(tail, 22);
+    insertAtEnd(tail, 24);
+
+    insertAtMiddle(head, 3, 30);
+
     print(head);
+
     return 0;
 }
