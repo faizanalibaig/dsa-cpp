@@ -1,4 +1,4 @@
-//singly linkedlist
+//singly LinkedList
 #include <iostream>
 using namespace std;
 
