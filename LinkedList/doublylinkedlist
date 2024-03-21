@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int data) {
+        this->data = data;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+
+void AddToHead(Node* &head, Node* &tail, int data) {
+    Node* node = new Node(data);
+    node->next = head;
+    if (head != NULL) {
+        head->prev = node;
+    }
+    head = node;
+    if (tail == NULL) {
+        tail = node;
+    }
+}
+
+void printForward(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << endl;
+        temp = temp->next;
+    }
+}
+
+void printBackward(Node* tail) {
+    Node* temp = tail;
+    while (temp != NULL) {
+        cout << temp->data << endl;
+        temp = temp->prev;
+    }
+}
+
+int main() {
+    Node* head = NULL;
+    Node* tail = NULL;
+
+    AddToHead(head, tail, 10);
+    AddToHead(head, tail, 20);
+    AddToHead(head, tail, 30);
+    AddToHead(head, tail, 40);
+
+    cout << "Printing forward:" << endl;
+    printForward(head);
+
+    cout << "Printing backward:" << endl;
+    printBackward(tail);
+
+    return 0;
+}
