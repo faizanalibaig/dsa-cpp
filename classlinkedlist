@@ -1,42 +1,43 @@
 #include <iostream>
 using namespace std;
 
-class Node {
-private:
-    int data;
-    Node* next;
-    Node* prev;
-
-public:
-    Node(int data) {
-        this->data = data;
-        this->next = nullptr;
-        this->prev = nullptr;
-    }
-
-    int getData() const {
-        return data;
-    }
-
-    void setData(int data) {
-        this->data = data;
-    }
-
-    Node* getNext() const {
-        return next;
-    }
-
-    void setNext(Node* next) {
-        this->next = next;
-    }
-
-    Node* getPrev() const {
-        return prev;
-    }
-
-    void setPrev(Node* prev) {
-        this->prev = prev;
-    }
+class Node{
+    private:
+      int data;
+      Node* prev;
+      Node* next;
+    
+    public:
+      Node(int data){
+          this->data=data;
+          this->prev=NULL;
+          this->next=NULL;
+      }
+      
+    int getData() const{
+         return data;
+     } 
+     
+     void setData(int data){
+         this->data=data;
+     } 
+     
+     Node* getPrev() const{
+         return prev;
+     }
+     
+     void setPrev (Node* prev){
+         this->prev=prev;
+     } 
+     
+    Node* getNext() const{
+         return next;
+     }
+     
+     void setNext(Node* next){
+         this->next=next;
+     } 
+     
 };
 
 class DoublyLinkedList {
@@ -65,49 +66,92 @@ public:
     void setTail(Node* tail) {
         this->tail = tail;
     }
-
-    void AddToHead(int data) {
-        Node* node = new Node(data);
+    
+    void AddtoHead(int data){
+        Node* node=new Node(data);
         node->setNext(head);
-        if (head != nullptr) {
+        if(head!=NULL){
             head->setPrev(node);
         }
-        head = node;
+        head=node;
         if (tail == nullptr) {
             tail = node;
         }
     }
-
-    void printForward() const {
-        Node* temp = head;
-        while (temp != nullptr) {
-            cout << temp->getData() << endl;
-            temp = temp->getNext();
+    
+    void Forward() const{
+        Node* temp=head;
+        while(temp!=NULL){
+            cout<<temp->getData()<<endl;
+            temp=temp->getNext();
         }
     }
-
-    void printBackward() const {
-        Node* temp = tail;
-        while (temp != nullptr) {
-            cout << temp->getData() << endl;
-            temp = temp->getPrev();
+    
+    void Backward() const{
+        Node* temp=tail;
+        while(temp!=NULL){
+            cout<<temp->getData()<<endl;
+            temp=temp->getPrev();
         }
     }
+    
+  void PositionEntry(int position, int data) {
+    Node* temp = head;
+    
+    int count = 1;
+    while (count<position-1) {
+        temp = temp->getNext();
+        count++;
+    }
+
+    Node* node = new Node(data);
+    node->setNext(temp->getNext());
+    node->setPrev(temp); 
+    if (temp->getNext() != nullptr) {
+        temp->getNext()->setPrev(node);  
+    }
+    temp->setNext(node);
+  }
+  
+  void Delete(int position){
+      Node* temp=head;
+      int count=1;
+      while(count<position-1){
+          temp=temp->getNext();
+          count++;
+      }
+      
+      if(temp==NULL){
+           cout << "Position out of bounds" << endl;
+           return;
+      }
+      
+      if (temp->getPrev() != nullptr) {
+        temp->getPrev()->setNext(temp->getNext());
+    } else {
+        head = temp->getNext();
+    }
+
+    if (temp->getNext() != nullptr) {
+        temp->getNext()->setPrev(temp->getPrev());
+    } else {
+        tail = temp->getPrev();
+    }
+
+    delete temp;
+  }
+
 };
 
 int main() {
     DoublyLinkedList dll;
-
-    dll.AddToHead(10);
-    dll.AddToHead(20);
-    dll.AddToHead(30);
-    dll.AddToHead(40);
-
-    cout << "Printing forward:" << endl;
-    dll.printForward();
-
-    cout << "Printing backward:" << endl;
-    dll.printBackward();
+    
+    dll.AddtoHead(10);
+    dll.AddtoHead(20);
+    dll.AddtoHead(30);
+    dll.PositionEntry(3,100);
+    dll.Delete(2);
+    dll.Forward();
 
     return 0;
 }
