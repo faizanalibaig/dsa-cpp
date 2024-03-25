@@ -44,6 +44,19 @@ void insertAtMiddle(Node* &head, int position, int data){
     
 }
 
+void deleteNode(Node* &head, int position){
+    Node* temp=head;
+    int count =1;
+    while(count<position-1){
+        temp=temp->next;
+        count++;
+    }
+    
+    Node* dle=temp->next;
+    temp->next=dle->next;
+    delete dle;
+}
+
 //print linked list
 void print(Node* &head){
     Node* temp=head;
@@ -68,6 +81,7 @@ int main() {
     insertAtEnd(tail, 22);
     insertAtEnd(tail, 24);
 
+    deleteNode(head, 2);
     insertAtMiddle(head, 3, 30);
 
     print(head);
