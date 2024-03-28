@@ -1,4 +1,4 @@
-//DNode
+//Main
 #include <iostream>
 #include "DNode.cpp"
 using namespace std;
