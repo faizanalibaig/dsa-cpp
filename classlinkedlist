@@ -1,158 +1,282 @@
-//linkedlist
 #include <iostream>
 using namespace std;
 
-class Node{
-    private:
-      int data;
-      Node* prev;
-      Node* next;
-    
-    public:
-      Node(int data){
-          this->data=data;
-          this->prev=NULL;
-          this->next=NULL;
-      }
-      
-    int getData() const{
-         return data;
-     } 
-     
-     void setData(int data){
-         this->data=data;
-     } 
-     
-     Node* getPrev() const{
-         return prev;
-     }
-     
-     void setPrev (Node* prev){
-         this->prev=prev;
-     } 
-     
-    Node* getNext() const{
-         return next;
-     }
-     
-     void setNext(Node* next){
-         this->next=next;
-     } 
-     
-};
-
-class DoublyLinkedList {
+template <class T> class Node {
 private:
-    Node* head;
-    Node* tail;
+  T data;
+  Node<T> *next;
 
 public:
-    DoublyLinkedList() {
-        head = nullptr;
-        tail = nullptr;
-    }
-
-    Node* getHead() const {
-        return head;
-    }
-
-    void setHead(Node* head) {
-        this->head = head;
-    }
-
-    Node* getTail() const {
-        return tail;
-    }
-
-    void setTail(Node* tail) {
-        this->tail = tail;
-    }
-    
-    void AddtoHead(int data){
-        Node* node=new Node(data);
-        node->setNext(head);
-        if(head!=NULL){
-            head->setPrev(node);
-        }
-        head=node;
-        if (tail == nullptr) {
-            tail = node;
-        }
-    }
-    
-    void Forward() const{
-        Node* temp=head;
-        while(temp!=NULL){
-            cout<<temp->getData()<<endl;
-            temp=temp->getNext();
-        }
-    }
-    
-    void Backward() const{
-        Node* temp=tail;
-        while(temp!=NULL){
-            cout<<temp->getData()<<endl;
-            temp=temp->getPrev();
-        }
-    }
-    
-  void PositionEntry(int position, int data) {
-    Node* temp = head;
-    
-    int count = 1;
-    while (count<position-1) {
-        temp = temp->getNext();
-        count++;
-    }
-
-    Node* node = new Node(data);
-    node->setNext(temp->getNext());
-    node->setPrev(temp); 
-    if (temp->getNext() != nullptr) {
-        temp->getNext()->setPrev(node);  
-    }
-    temp->setNext(node);
-  }
-  
-  void Delete(int position){
-      Node* temp=head;
-      int count=1;
-      while(count<position-1){
-          temp=temp->getNext();
-          count++;
-      }
-      
-      if(temp==NULL){
-           cout << "Position out of bounds" << endl;
-           return;
-      }
-      
-      if (temp->getPrev() != nullptr) {
-        temp->getPrev()->setNext(temp->getNext());
-    } else {
-        head = temp->getNext();
-    }
-
-    if (temp->getNext() != nullptr) {
-        temp->getNext()->setPrev(temp->getPrev());
-    } else {
-        tail = temp->getPrev();
-    }
-
-    delete temp;
+  Node() {
+    data = 0;
+    next = NULL;
   }
 
+  void setData(T data) { this->data = data; }
+
+  T getData() { return data; }
+
+  void setNext(Node<T> *next) { this->next = next; }
+
+  Node<T> *getNext() { return next; }
+
+  void addtohead(Node<T> *&head, T data);
+  void addtotail(Node<T> *&tail,Node<T> * &head, T data);
+  void deletehead(Node<T> *&head);
+  void deletetail(Node<T> *&tail, Node<T> *&head);
+  void deleteany(Node<T>* &head,Node<T> *&tail, T key);
+  void addbefore(Node<T>* &head,Node<T> *&tail, T key);
+  void addafter(Node<T>* &head,Node<T> *&tail, T key, T data);
+  void searching(Node<T> *&head,T element);
+  void tailHead(Node<T>* &head,Node<T> *&tail);
+  void swap(Node<T>* &head,Node<T> *&tail, T key1, T key2);
+  void show(Node<T> *&head);
 };
 
-int main() {
-    DoublyLinkedList dll;
-    
-    dll.AddtoHead(10);
-    dll.AddtoHead(20);
-    dll.AddtoHead(30);
-    dll.PositionEntry(3,100);
-    dll.Delete(2);
-    dll.Forward();
+template <class T> void Node<T>::addtohead(Node<T> *&head, T data) {
+  Node<T> *temp = new Node<T>();
+  temp->setData(data);
+  temp->setNext(head);
+  head = temp;
+}
 
-    return 0;
+template <class T> void Node<T>::addtotail(Node<T> *&tail,
+Node<T> * &head, T data) {
+   Node<T> *node=new Node<T>();
+   node->setData(data);
+   node->setNext(NULL);
+   if(tail == NULL) {
+      head = tail = node;
+   } else {
+      tail->setNext(node);
+      tail = node;
+   }
+}
+
+template <class T> 
+void Node<T>::deletehead(Node<T> *&head) {
+
+  Node<T> *temp = head;
+  if (head == 0) {
+    cout << "Linkedlist Empty";
+  } else {
+    head = temp->getNext();
+    delete temp;
+  }
+}
+
+template <class T>
+void Node<T>::deletetail(Node<T>* &tail, Node<T>* &head) {
+ if (head == NULL) {
+    cout << "Linked list is empty." << endl;
+    return;
+ }
+
+ if (head == tail) { 
+    delete head;
+    head = tail = NULL;
+    return;
+ }
+
+ Node<T> *temp = head;
+ Node<T> *temp1 = tail;
+ 
+ while (temp->getNext() != tail) {
+    temp = temp->getNext();
+ }
+  
+ delete temp1;
+ tail = temp;
+ tail->setNext(NULL); 
+}
+
+template<class T>
+void Node<T>::deleteany(Node<T> *&head,Node<T> *&tail, T key){
+  Node<T> *temp=head;
+  if(head==0){
+    cout<<"empty";
+    return;
+  }
+  if(head==tail){
+    delete head;
+    head=tail=NULL;
+    return;
+  }
+
+  while(temp->getData()!=key){
+    temp=temp->getNext();
+  }
+
+  if(temp==head){
+    deletehead(head);
+    return;
+  }
+  if(temp==tail){
+    deletetail(tail,head);
+  }
+  else{
+   Node<T> *temp1=head;
+    while(temp1->getNext()!=temp){
+      temp1=temp1->getNext();
+    }
+    temp1->setNext(temp->getNext());
+    delete temp;
+  }
+ }
+
+template <class T>
+void Node<T>::searching(Node<T> *&head,T element){
+  Node<T> *temp=head;
+  while(temp->getData()!=element){
+    temp=temp->getNext();
+  }
+  cout<<"Element found at"<< temp->getData();
+  
+}
+
+template <class T>
+void Node<T>::addbefore(Node<T>* &head, Node<T>* &tail, T key){
+  Node<T> *temp=head;
+  if(head==0){
+    cout<<"empty";
+  }
+  if(temp==head){
+    addtohead(head, key);
+  }
+
+  while(temp->getNext()!=NULL && temp->getNext()->getData()!=key){
+    temp=temp->getNext();
+  }
+
+  if(temp->getNext()==NULL){
+    cout<<"not found";
+  }
+
+  Node<T> *node=new Node<T>();
+  node->setData(100);
+  node->setNext(temp->getNext());
+  temp->setNext(node);
+  
+}
+
+template <class T>
+void Node<T>::addafter(Node<T>* &head, Node<T>* &tail, T key, T data) {
+    Node<T>* temp = head;
+
+    while (temp && temp->getData() != key) {
+        temp = temp->getNext();
+    }
+
+    if (!temp) {
+        cout << "Key not found in the list." << std::endl;
+        return;
+    }
+
+    Node<T>* node = new Node<T>();
+    node->setData(data);
+    node->setNext(temp->getNext());
+    temp->setNext(node);
+
+    if (temp == tail) {
+      addtotail(tail, head, data);
+    }
+}
+
+
+template <class T>
+void Node<T>::tailHead(Node<T> *&head, Node<T> *&tail) {
+    if (head == nullptr || head == tail) {
+        return; // Nothing to swap or list is empty
+    }
+
+    Node<T> *current = head;
+    Node<T> *prev = nullptr;
+
+    while (current->getNext() != nullptr) {
+        prev = current;
+        current = current->getNext();
+    }
+
+    // Swap head and tail
+    prev->setNext(nullptr); // Disconnect tail from the list
+    current->setNext(head); // Connect tail to the head
+    Node<T> *temp = head; // Temporarily store the old head
+    head = tail; // Make tail the new head
+    tail = prev; // Make the second last node the new tail
+    delete temp; // Delete the old head node
+}
+
+template <class T>
+void Node<T>::swap(Node<T>* &head, Node<T>* &tail, T key1, T key2) {
+
+  if(key1==key2) return;
+
+  Node<T> *temp1=head, *temp2=head;
+  Node<T> *prev1=NULL, *prev2=NULL;
+
+  while(temp1->getData()!=key1){
+    prev1=temp1;
+    temp1=temp1->getNext();
+  }
+  while(temp2->getData()!=key2){
+    prev2=temp2;
+    temp2=temp2->getNext();
+  }
+
+  if(!temp1 || !temp2) return;
+
+  if(prev1){
+    prev1->setNext(temp2);
+  }
+  else{
+    head=temp2;
+  }
+
+  if(prev2){
+    prev2->setNext(temp1);
+  }else{
+    head=temp1;
+  }
+
+  Node<T> *temp=temp1->getNext();
+  temp1->setNext(temp2->getNext());
+  temp2->setNext(temp);
+
+}
+
+
+  
+template <class T> 
+void Node<T>::show(Node<T> *&head) {
+  Node<T> *temp = head;
+  while (temp != NULL) {
+    cout << temp->getData() << " ";
+    temp = temp->getNext();
+  }
+  cout << endl;
+}
+
+int main() {
+
+  Node<int> *node = new Node<int>();
+  Node<int> *head = node;
+  Node<int> *tail = node;
+
+  node->setData(10);
+  node->setNext(NULL);
+
+  node->addtohead(head, 20);
+  node->addtotail(tail,head, 30);
+  // node->searching(head,30);
+  // node->deletehead(head);
+  // node->deleteany(head,tail, 10);
+  // node->deletetail(tail,head);
+
+  // node->tailHead(head,tail);
+  // node->addbefore(head, tail, 30);
+  // node->swap(head, tail, 20, 30);
+  node->addafter(head, tail, 30, 40);
+  node->show(head);
+
+  delete node;
 }
