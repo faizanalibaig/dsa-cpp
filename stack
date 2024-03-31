@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+#define n 100
+
+class stack{
+   int arr[n]; // Corrected array declaration
+   int top;
+
+ public:
+   stack(){
+     top=-1;
+   }
+
+ void push(int x);
+ void pop();
+ int& TopElement(); // Corrected return type
+ bool empty();
+};
+
+void stack::push(int x){
+ if(top==n-1){
+    cout<<"Stack overflow";
+    return;
+ }
+
+ top++;
+ arr[top]=x;
+}
+
+void stack::pop(){
+ if(top==-1){
+    cout<<"Stack underflow";
+    return;
+ }
+
+ top--;
+}
+
+int& stack::TopElement(){ // Corrected function declaration
+    if(top==-1){
+      cout<<"Stack underflow";
+      return arr[0]; // Return a reference to the first element as a placeholder
+    }
+
+ return arr[top];
+}
+
+bool stack::empty(){ // Corrected function declaration
+ return top==-1;
+}
+
+int main() {
+    stack stk;
+    stk.push(10);
+    stk.push(20);
+    stk.push(30);
+    stk.push(40);
+    stk.pop();
+
+  if(!stk.empty()){
+    cout<<stk.TopElement();
+  }
+
+}
