@@ -2,8 +2,9 @@
 using namespace std;
 #define n 100
 
+template <class T>
 class stack{
-   int arr[n]; // Corrected array declaration
+   T arr[n];
    int top;
 
  public:
@@ -11,13 +12,15 @@ class stack{
      top=-1;
    }
 
- void push(int x);
- void pop();
- int& TopElement(); // Corrected return type
- bool empty();
+   void push(T x); // Corrected parameter type
+   void pop();
+   T& TopElement(); // Corrected return type
+   bool empty(); // Corrected return type
+   bool full(); // Corrected return type
 };
 
-void stack::push(int x){
+template <class T>
+void stack<T>::push(T x){ // Corrected parameter type
  if(top==n-1){
     cout<<"Stack overflow";
     return;
@@ -27,7 +30,8 @@ void stack::push(int x){
  arr[top]=x;
 }
 
-void stack::pop(){
+template <class T>
+void stack<T>::pop(){
  if(top==-1){
     cout<<"Stack underflow";
     return;
@@ -36,7 +40,8 @@ void stack::pop(){
  top--;
 }
 
-int& stack::TopElement(){ // Corrected function declaration
+template <class T>
+T& stack<T>::TopElement(){ // Corrected return type
     if(top==-1){
       cout<<"Stack underflow";
       return arr[0]; // Return a reference to the first element as a placeholder
@@ -45,20 +50,40 @@ int& stack::TopElement(){ // Corrected function declaration
  return arr[top];
 }
 
-bool stack::empty(){ // Corrected function declaration
+template <class T>
+bool stack<T>::empty(){ // Corrected return type
  return top==-1;
 }
 
+template <class T>
+bool stack<T>::full(){ // Corrected return type
+ return top==n-1;
+}
+
 int main() {
-    stack stk;
-    stk.push(10);
+    stack<int> stk;
+    stk.push(10); 
     stk.push(20);
     stk.push(30);
     stk.push(40);
-    stk.pop();
 
-  if(!stk.empty()){
-    cout<<stk.TopElement();
-  }
+    stack<int> stk1=stk;
 
+   while(!stk1.empty() && !stk1.full()){
+      cout<<stk1.TopElement() <<" ";
+      stk1.pop();
+     }
+
+ char c;
+ cout<<"Enter a characters: ";
+ stack<char> sc;
+
+   while(cin.get(c) && c!='\n' && !sc.full() && c != '.'){
+       sc.push(c);
+   }
+
+ while(!sc.empty() && !sc.full()){
+    cout<<sc.TopElement();
+    sc.pop();
+ }
 }
