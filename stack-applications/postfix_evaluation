@@ -12,7 +12,7 @@ public:
 
     void push(double x) {
         if (top == size - 1) {
-            cout << "Stack Overflow" << endl;
+            cout << "Stack Overflow." << endl;
         } else {
             top++;
             arr[top] = x;
