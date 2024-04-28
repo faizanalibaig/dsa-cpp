@@ -57,7 +57,7 @@ int main() {
 
         if (data[0] == '+' || data[0] == '-' || data[0] == '*' || data[0] == '/') {
             if (s1.empty() || s1.empty()) {
-                cout << "Not enough operands" << endl;
+                cout << "Not enough operands to find" << endl;
                 continue;
             }
 
