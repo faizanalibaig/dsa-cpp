@@ -1,0 +1,76 @@
+#include <iostream>
+#define size 100
+using namespace std;
+
+class stack {
+  int top;
+  char arr[size];
+
+public:
+  stack() { top = -1; }
+
+  void push(char x) {
+    if (top == size - 1) {
+      cout << "Stack Overflow" << endl;
+    } else {
+      top++;
+      arr[top] = x;
+    }
+  }
+
+  void pop() {
+    if (top == -1) {
+      cout << "Stack Underflow" << endl;
+    } else {
+      top--;
+    }
+  }
+
+  char TopElement() {
+    if (top == -1) {
+      cout << "Stack is empty" << endl;
+      return '\0';
+    } else {
+      return arr[top];
+    }
+  }
+
+  bool empty() { return top == -1; }
+
+  bool full() { return top == size - 1; }
+};
+
+int main() {
+  stack s1;
+
+  char data, match;
+  char unmatch = '\0';
+
+  while (unmatch != ')' && unmatch != '}' && unmatch != ']') {
+    cout<<"Enter tag: ";
+    cin >> data;
+
+    if (data == '(' || data == '{' || data == '[') {
+      s1.push(data);
+    } else {
+      unmatch = data;
+    }
+  }
+
+  if (!s1.empty()) {
+    match = s1.TopElement();
+    s1.pop();
+
+    if (unmatch == ')' && match == '(' ||
+        unmatch == '}' && match == '{' ||
+        unmatch == ']' && match == '[') {
+      cout << "Element matched" << endl;
+    } else {
+      cout << "Unmatched closing bracket" << endl;
+    }
+  } else {
+    cout << "No opening bracket found" << endl;
+  }
+
+  return 0;
+}
