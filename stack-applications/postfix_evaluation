@@ -1,0 +1,102 @@
+#include <iostream>
+#include <cstdlib>
+#define size 100
+using namespace std;
+
+class stack {
+    int top;
+    double arr[size];
+
+public:
+    stack() { top = -1; }
+
+    void push(double x) {
+        if (top == size - 1) {
+            cout << "Stack Overflow" << endl;
+        } else {
+            top++;
+            arr[top] = x;
+        }
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "Stack Underflow" << endl;
+        } else {
+            top--;
+        }
+    }
+
+    double TopElement() {
+        if (top == -1) {
+            cout << "Stack is empty" << endl;
+            return 0.0;
+        } else {
+            return arr[top];
+        }
+    }
+
+    bool empty() { return top == -1; }
+
+    bool full() { return top == size - 1; }
+};
+
+int main() {
+    stack s1;
+    char data[100];
+    double result;
+
+    while (true) {
+        cout << "Enter element: ";
+        cin >> data;
+
+        if (data[0] == 'q') break;
+
+        double push_data = atof(data);
+        s1.push(push_data);
+
+        if (data[0] == '+' || data[0] == '-' || data[0] == '*' || data[0] == '/') {
+            if (s1.empty() || s1.empty()) {
+                cout << "Not enough operands" << endl;
+                continue;
+            }
+
+            double b = s1.TopElement();
+            s1.pop();
+            double a = s1.TopElement();
+            s1.pop();
+
+            switch (data[0]) {
+                case '+':
+                    result = a + b;
+                    break;
+
+                case '-':
+                    result = a - b;
+                    break;
+
+                case '*':
+                    result = a * b;
+                    break;
+
+                case '/':
+                    if (b == 0) {
+                        cout << "Division by zero" << endl;
+                        continue;
+                    }
+                    result = a / b;
+                    break;
+            }
+
+            s1.push(result);
+        }
+    }
+
+    if (!s1.empty()) {
+        cout << "Result: " << s1.TopElement() << endl;
+    } else {
+        cout << "No result" << endl;
+    }
+
+    return 0;
+}
