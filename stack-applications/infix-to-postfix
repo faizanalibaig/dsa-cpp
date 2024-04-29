@@ -1,0 +1,103 @@
+#include <iostream>
+#include <cstdlib>
+#include <string> 
+
+#define size 100
+
+using namespace std;
+
+template <class T>
+class stack {
+    int top;
+    T arr[size];
+
+public:
+    stack() { top = -1; }
+
+    void push(T x) { 
+        if (top == size - 1) {
+            cout << "Stack Overflow" << endl;
+        } else {
+            top++;
+            arr[top] = x;
+        }
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "Stack Underflow" << endl;
+        } else {
+            top--;
+        }
+    }
+
+    T topElement() { 
+        if (top == -1) {
+            cout << "Stack is empty" << endl;
+            return 0.0;
+        } else {
+            return arr[top];
+        }
+    }
+
+    bool empty() { return top == -1; }
+
+    bool full() { return top == size - 1; }
+};
+
+int precedence(char value);
+string infixToPostfix(string infixValue);
+
+int main() {
+    stack<char> s1;
+
+    cout << infixToPostfix("(a-b/c)*(a/k-l)") << endl; 
+
+    return 0;
+}
+
+int precedence(char value) {
+    if (value == '^') {
+        return 3;
+    } else if (value == '*' || value == '/') {
+        return 2;
+    } else if (value == '+' || value == '-') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+string infixToPostfix(string infixValue) {
+    stack<char> s1;
+    string postfixValue;
+
+    for (int i = 0; i < infixValue.length(); i++) {
+        if ((infixValue[i] >= 'a' && infixValue[i] <= 'z') || (infixValue[i] >= 'A' && infixValue[i] <= 'Z')) { 
+            postfixValue += infixValue[i];
+        } else if (infixValue[i] == '(') {
+            s1.push(infixValue[i]);
+        } else if (infixValue[i] == ')') {
+            while (!s1.empty() && s1.topElement() != '(') { 
+                postfixValue += s1.topElement();
+                s1.pop();
+            }
+            if (!s1.empty()) {
+                s1.pop();
+            }
+        } else {
+            while (!s1.empty() && precedence(infixValue[i]) <= precedence(s1.topElement())) { 
+                postfixValue += s1.topElement();
+                s1.pop();
+            }
+            s1.push(infixValue[i]);
+        }
+    }
+
+    while (!s1.empty()) { 
+        postfixValue += s1.topElement();
+        s1.pop();
+    }
+
+    return postfixValue;
+}
