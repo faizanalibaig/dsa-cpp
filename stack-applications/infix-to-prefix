@@ -1,0 +1,101 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+#define size 100
+
+using namespace std;
+
+template <class T>
+class stack {
+    int top;
+    T arr[size];
+
+public:
+    stack() : top(-1) {}
+
+    void push(T x) {
+        if (top == size - 1) {
+            cout << "Stack Overflow" << endl;
+        } else {
+            arr[++top] = x;
+        }
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "Stack Underflow" << endl;
+        } else {
+            --top;
+        }
+    }
+
+    T topElement() {
+        if (top == -1) {
+            throw runtime_error("Stack is empty");
+        } else {
+            return arr[top];
+        }
+    }
+
+    bool empty() { return top == -1; }
+    bool full() { return top == size - 1; }
+};
+
+int precedence(char value) {
+    if (value == '^') {
+        return 3;
+    } else if (value == '*' || value == '/') {
+        return 2;
+    } else if (value == '+' || value == '-') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+string infixToPrefix(string infix) {
+    reverse(infix.begin(), infix.end());
+    for (char &ch : infix) {
+        if (ch == '(') {
+            ch = ')';
+        } else if (ch == ')') {
+            ch = '(';
+        }
+    }
+
+    stack<char> s;
+    string prefix;
+    for (char c : infix) {
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+            prefix += c;
+        } else if (c == '(') {
+            s.push(c);
+        } else if (c == ')') {
+            while (!s.empty() && s.topElement() != '(') {
+                prefix += s.topElement();
+                s.pop();
+            }
+            if (!s.empty()) s.pop();
+        } else {
+            while (!s.empty() && precedence(c) <= precedence(s.topElement())) {
+                prefix += s.topElement();
+                s.pop();
+            }
+            s.push(c);
+        }
+    }
+
+    while (!s.empty()) {
+        prefix += s.topElement();
+        s.pop();
+    }
+
+    reverse(prefix.begin(), prefix.end());
+    return prefix;
+}
+
+int main() {
+    cout << infixToPrefix("(a-b/c)*(a/k-l)") << endl;
+    return 0;
+}
