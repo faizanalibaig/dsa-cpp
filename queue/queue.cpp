@@ -61,7 +61,7 @@ public:
         return;
     }
 
-    for (int i = front; i < rear; i++) {
+    for (int i = front; i <=rear-1; i++) {
         cout << arr[i] << " ";
     }
     cout << endl;
