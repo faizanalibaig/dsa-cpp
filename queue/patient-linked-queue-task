@@ -1,0 +1,220 @@
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
+using namespace std;
+
+class queuelinkedlist {
+  int data;
+  queuelinkedlist *next;
+
+  string name;
+  int age;
+  long int contactInformation;
+  string reasonOfVisit;
+  string appointmentTime;
+
+public:
+  queuelinkedlist(int value, string name, int age, int contactInformation,
+                  string reasonOfVisit, string appointmentTime) {
+    this->data = value;
+    this->name = name;
+    this->age = age;
+    this->contactInformation = contactInformation;
+    this->reasonOfVisit = reasonOfVisit;
+    this->appointmentTime = appointmentTime;
+    next = NULL;
+  }
+
+  void enqueue(string name, int age, long int contactInformation,
+               string reasonOfVisit, string appointmentTime,
+               queuelinkedlist *&tail, queuelinkedlist *&head) {
+
+    queuelinkedlist *q = new queuelinkedlist(0, name, age, contactInformation,
+                                             reasonOfVisit, appointmentTime);
+    if (tail == NULL) {
+      head = q;
+      tail = q;
+    } else {
+      tail->next = q;
+      tail = q;
+    }
+  }
+
+  void dequeue(queuelinkedlist *&head, queuelinkedlist *&tail) {
+    if (head == NULL) {
+      cout << "Queue is empty" << endl;
+      return;
+    }
+
+    queuelinkedlist *temp = head;
+    head = head->next;
+    delete temp;
+    if (head == NULL) {
+      tail = NULL;
+    }
+  }
+
+  void removepatient(queuelinkedlist *&head) {
+    queuelinkedlist *temp = head;
+    auto now = chrono::system_clock::now();
+    auto now_time = chrono::system_clock::to_time_t(now);
+    tm local_tm = *localtime(&now_time);
+
+    ostringstream oss;
+    oss << put_time(&local_tm, "%H:%M:%S");
+    string current_time = oss.str();
+
+    while (temp != NULL && current_time >= temp->appointmentTime) {
+      cout << "Removing patient: " << temp->name << endl;
+      queuelinkedlist *toDelete = temp;
+      temp = temp->next;
+      head = temp;
+      delete toDelete;
+    }
+  }
+
+  void printUserDetails(queuelinkedlist *head, string nameToMatch) {
+    queuelinkedlist *temp = head;
+
+    while (temp != nullptr) {
+      if (temp->name == nameToMatch) {
+        cout << "Data: " << temp->data << ", Name: " << temp->name
+             << ", Age: " << temp->age
+             << ", Contact: " << temp->contactInformation
+             << ", Reason: " << temp->reasonOfVisit
+             << ", Appointment Time: " << temp->appointmentTime << endl;
+        return; // No need to continue searching if we found a match
+      }
+      temp = temp->next;
+    }
+
+    cout << "User with name '" << nameToMatch << "' not found." << endl;
+  }
+
+  void removeSinglePatient(string name, queuelinkedlist *&head) {
+    queuelinkedlist *temp = head;
+
+    if (head == NULL) {
+      cout << "Queue is empty" << endl;
+      return;
+    }
+
+    if (head->name == name) {
+      head = head->next;
+      delete temp;
+      return;
+    }
+
+    queuelinkedlist *prev = head;
+    while (temp != NULL && temp->name != name) {
+      prev = temp;
+      temp = temp->next;
+    }
+
+    if (temp == NULL) {
+      cout << "Patient with name '" << name << "' not found." << endl;
+      return;
+    }
+
+    prev->next = temp->next;
+    delete temp;
+  }
+
+  void display(queuelinkedlist *head) {
+    queuelinkedlist *temp = head;
+    while (temp != NULL) {
+      cout << "Data: " << temp->data << ", Name: " << temp->name
+           << ", Age:" << temp->age << ", Contact: " << temp->contactInformation
+           << ", Reason: " << temp->reasonOfVisit
+           << ",Appointment Time: " << temp->appointmentTime << endl
+           << endl
+           << endl;
+      temp = temp->next;
+    }
+  }
+};
+
+int main() {
+  queuelinkedlist *head = NULL;
+  queuelinkedlist *tail = NULL;
+  string name;
+  int age;
+  long int contactInformation;
+  string reasonOfVisit;
+  string appointmentTime;
+  int option;
+  string nameToFind;
+  string nameToDelete;
+
+  queuelinkedlist *q =
+      new queuelinkedlist(10, "John", 25, 1234567, "Fever", "10:10:00");
+  head = q;
+  tail = q;
+
+  string useroption = "yes";
+
+  while (useroption == "yes" || useroption == "Yes") {
+
+    cout << "Option" << endl
+         << "select 1 to enter a patient details" << endl
+         << "select 2 to remove a patient" << endl
+         << "select 3 to find patient detail" << endl
+         << "select 4 to display all patients" << endl
+         << "select 5 to exit" << endl;
+
+    cout<<"\nEnter your option: ";
+    cin >> option;
+
+    switch (option) {
+    case 1:
+      cout << "Enter name of patient: ";
+      cin >> name;
+      cout << "Enter age of patient: ";
+      cin >> age;
+      cout << "Enter contact information of patient: ";
+      cin >> contactInformation;
+      cout << "Enter reason of patient visit: ";
+      cin >> reasonOfVisit;
+      cout << "Enter appointment time of patient: ";
+      cin >> appointmentTime;
+      q->enqueue(name, age, contactInformation, reasonOfVisit, appointmentTime,
+                 tail, head);
+      break;
+    case 2:
+      cout << "Enter patient name to remove patient:";
+      cin >> nameToFind;
+      q->removeSinglePatient(nameToFind, head);
+      break;
+
+    case 3:
+      cout << "Enter patient name to search data:";
+      cin >> nameToFind;
+      q->printUserDetails(head, nameToFind);
+      break;
+
+    case 4:
+      cout << "List of all patients: " << endl;
+      q->display(head);
+      break;
+
+    case 5:
+      cout << "exiting program";
+      return 0;
+
+    default:
+      cout << "wrong option selected";
+      break;
+    }
+
+    cout << "Do you want to continue: yes or no" << endl;
+    cin >> useroption;
+    if(useroption =="no" || useroption == "No"){
+      cout<<"Thanks for visiting";
+    }
+  }
+
+  return 0;
+}
