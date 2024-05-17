@@ -5,8 +5,9 @@ struct node {
 };
 
 class Node {
-public:
+private:
     int data;
     Node* left;
     Node* right;
+
 };
