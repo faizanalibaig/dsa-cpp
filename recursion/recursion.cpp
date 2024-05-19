@@ -1,17 +1,21 @@
 #include <iostream>
 using namespace std;
 
-int recursion(int n){
+int recursion(int arr[], int n){
+  
+  //base recursion
+  if(n<0)
+  return 0;
 
-  //base case in the recursion
-  if(n==0)
-  return 1;
+  cout<<arr[n]<<" ";
 
-
-  //recursive case in the recursion
-  return n*recursion(n-1);
+  return recursion(arr, n-1);
 }
 
-int main() {
-  cout<<recursion(5);
+int main(){
+
+  int arr[5]={1,2,3,4,5};
+  int n=sizeof(arr)/sizeof(int)-1;
+  recursion(arr, n);
+  return 0;
 }
