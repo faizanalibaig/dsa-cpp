@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+
+//you can use this to make stack or queue as well as tree
 template <class T> class Node {
 private:
   T data;
