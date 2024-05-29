@@ -3,25 +3,40 @@ using namespace std;
 
 class queuelinkedlist {
     int data;
+    int priority;
     queuelinkedlist* next;
 
 public:
-    queuelinkedlist(int value) {
+    queuelinkedlist(int value, int priority) {
         data = value;
+        this->priority = priority;
         next = NULL;
     }
 
-    void enqueue(int value, queuelinkedlist*& tail, queuelinkedlist*& head) {
-        queuelinkedlist* q = new queuelinkedlist(value);
+void enqueue(int value, int priority, queuelinkedlist*& tail, queuelinkedlist*& head) {
+    queuelinkedlist* q = new queuelinkedlist(value, priority);
 
-        if (tail == NULL) {
+    if (tail == NULL) {
+        head = q;
+        tail = q;
+    } else {
+        if (priority > head->priority) {
+            q->next = head;
             head = q;
-            tail = q;
-        } else {
+        } else if (priority < tail->priority) {
             tail->next = q;
             tail = q;
+        } else {
+            queuelinkedlist* temp = head;
+            while (temp->next != NULL && temp->next->priority > priority) {
+                temp = temp->next;
+            }
+            q->next = temp->next;
+            temp->next = q;
         }
     }
+}
+
 
     void dequeue(queuelinkedlist*& head, queuelinkedlist*& tail) {
         if (head == NULL) {
@@ -51,13 +66,13 @@ int main() {
     queuelinkedlist* head = NULL;
     queuelinkedlist* tail = NULL;
 
-    queuelinkedlist* q = new queuelinkedlist(10);
+    queuelinkedlist* q = new queuelinkedlist(10, 1);
     head = q;
     tail = q;
 
-    q->enqueue(20, tail, head);
-    q->enqueue(30, tail, head);
-    q->enqueue(40, tail, head);
+    q->enqueue(20,2, tail, head);
+    q->enqueue(30,5, tail, head);
+    q->enqueue(40,3, tail, head);
     q->dequeue(head, tail);
     q->display(head);
 
