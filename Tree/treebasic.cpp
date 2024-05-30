@@ -1,108 +1,145 @@
 #include <iostream>
+
 using namespace std;
 
-// Define the Node class
-class Node {
-private:
-    int data;
-    Node* left;
-    Node* right;
-
+class node {
 public:
-    // Constructor to create a new node
-    Node(int data) {
-        this->data = data;
-        this->left = nullptr;
-        this->right = nullptr;
-    }
+    int data;
+    node* left;
+    node* right;
 
-    // Getter for data
-    int getData() {
-        return data;
-    }
-
-    // Getter for left child
-    Node* getLeft() {
-        return left;
-    }
-
-    // Getter for right child
-    Node* getRight() {
-        return right;
-    }
-
-    // Setter for left child
-    void setLeft(Node* leftNode) {
-        left = leftNode;
-    }
-
-    // Setter for right child
-    void setRight(Node* rightNode) {
-        right = rightNode;
+    node(int d) {
+        this->data = d;
+        this->left = NULL;
+        this->right = NULL;
     }
 };
 
-// Function to insert a node in the binary tree
-Node* insertNode(Node* root, int data) {
-    if (root == nullptr) {
-        return new Node(data);
-    } else if (data < root->getData()) {
-        root->setLeft(insertNode(root->getLeft(), data));
-    } else {
-        root->setRight(insertNode(root->getRight(), data));
-    }
-    return root;
-}
+class binarytree {
+public:
+    node* root;
 
-// In-order traversal
-void inOrder(Node* root) {
-    if (root != nullptr) {
-        inOrder(root->getLeft());
-        cout << root->getData() << " ";
-        inOrder(root->getRight());
+    binarytree() {
+        this->root = NULL;
     }
-}
 
-// Pre-order traversal
-void preOrder(Node* root) {
-    if (root != nullptr) {
-        cout << root->getData() << " ";
-        preOrder(root->getLeft());
-        preOrder(root->getRight());
-    }
-}
+    void insert(node*& root, int data) {
+        if (root == NULL) {
+            root = new node(data);
+            return;
+        }
 
-// Post-order traversal
-void postOrder(Node* root) {
-    if (root != nullptr) {
-        postOrder(root->getLeft());
-        postOrder(root->getRight());
-        cout << root->getData() << " ";
+        if (data < root->data) {
+            insert(root->left, data);
+        } else if (data > root->data) {
+            insert(root->right, data);
+        }
     }
-}
+
+    void insert(int data) {
+        insert(root, data);
+    }
+
+    bool search(node* root, int data) {
+        if (root == NULL) {
+            return false;
+        }
+
+        if (root->data == data) {
+            return true;
+        }
+
+        if (data < root->data) {
+            return search(root->left, data);
+        } else {
+            return search(root->right, data);
+        }
+    }
+
+    bool search(int data) {
+        return search(root, data);
+    }
+
+    void inorder(node* root) {
+        if (root == NULL) return;
+        inorder(root->left);
+        cout << root->data << " ";
+        inorder(root->right);
+    }
+
+    void preorder(node* root) {
+        if (root == NULL) return;
+        cout << root->data << " ";
+        preorder(root->left);
+        preorder(root->right);
+    }
+
+    void postorder(node* root) {
+        if (root == NULL) return;
+        postorder(root->left);
+        postorder(root->right);
+        cout << root->data << " ";
+    }
+
+    void inorder() {
+        inorder(root);
+        cout << endl;
+    }
+
+    void preorder() {
+        preorder(root);
+        cout << endl;
+    }
+
+    void postorder() {
+        postorder(root);
+        cout << endl;
+    }
+};
 
 int main() {
-    Node* root = nullptr;
-    root = insertNode(root, 50);
-    insertNode(root, 30);
-    insertNode(root, 20);
-    insertNode(root, 40);
-    insertNode(root, 70);
-    insertNode(root, 60);
-    insertNode(root, 80);
+    binarytree b;
+    int data, option;
 
-    cout << "In-order traversal: ";
-    inOrder(root);
-    cout << endl;
+    do {
+        cout << "Add a node: 1" << endl
+             << "Search a node: 2" << endl
+             << "In-order Traversal: 3" << endl
+             << "Pre-order Traversal: 4" << endl
+             << "Post-order Traversal: 5" << endl
+             << "Exit: 0" << endl;
+        cout << "Enter option: ";
+        cin >> option;
 
-    cout << "Pre-order traversal: ";
-    preOrder(root);
-    cout << endl;
-
-    cout << "Post-order traversal: ";
-    postOrder(root);
-    cout << endl;
+        switch (option) {
+            case 1:
+                cout << "Enter data in the tree: ";
+                cin >> data;
+                b.insert(data);
+                break;
+            case 2:
+                cout << "Enter data to search: ";
+                cin >> data;
+                if (b.search(data)) {
+                    cout << "Found" << endl;
+                } else {
+                    cout << "Not found" << endl;
+                }
+                break;
+            case 3:
+                cout << "In-order Traversal: ";
+                b.inorder();
+                break;
+            case 4:
+                cout << "Pre-order Traversal: ";
+                b.preorder();
+                break;
+            case 5:
+                cout << "Post-order Traversal: ";
+                b.postorder();
+                break;
+        }
+    } while (option != 0);
 
     return 0;
 }
-
