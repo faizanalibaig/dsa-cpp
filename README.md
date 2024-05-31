@@ -1,3 +1,3 @@
-# sorting-dsa-cpp
+dsa-cpp
 
-almost covered all the basic data structures just left with graphs. 
+almost covered all the basic data structures. 
